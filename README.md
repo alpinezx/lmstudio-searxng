@@ -29,7 +29,7 @@ SearXNG is a self-hosted, privacy-respecting meta search engine. It queries Goog
 Open Ubuntu and run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/yourname/lmstudio-searxng/main/setup1.sh | bash
+curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/setup1.sh | bash
 ```
 
 This installs Docker and adds your user to the docker group.
@@ -45,7 +45,7 @@ When the script finishes it will tell you to restart. Do this:
 ### Step 3 — Run the second script
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/yourname/lmstudio-searxng/main/setup2.sh | bash
+curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/setup2.sh | bash
 ```
 
 This creates the SearXNG config, launches the container, and verifies everything is working.
