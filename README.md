@@ -1,5 +1,7 @@
 # lmstudio-searxng
 
+> **Windows only.** This setup runs SearXNG inside WSL2 (Windows Subsystem for Linux) and connects it to LM Studio on Windows. It is not intended for native Linux or macOS.
+
 Automated setup scripts for a private local search engine (SearXNG) connected to LM Studio via MCP.
 
 SearXNG is a self-hosted, privacy-respecting meta search engine. It queries Google, Bing, DuckDuckGo and others simultaneously, strips out all ads and tracking, and returns clean results — served entirely from your own machine. It can be used directly in your browser or connected to LM Studio so your local AI can search the web.
