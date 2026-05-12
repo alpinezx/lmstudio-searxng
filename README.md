@@ -131,7 +131,7 @@ curl "http://localhost:8081/search?q=test&format=json"  # Test SearXNG
 docker stop searxng
 docker rm searxng
 docker rmi searxng/searxng
-rm -rf ~/searxng-config
+sudo rm -rf ~/searxng-config
 ```
 
 ### Docker
