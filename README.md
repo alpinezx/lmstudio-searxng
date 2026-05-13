@@ -127,7 +127,42 @@ curl "http://localhost:8081/search?q=test&format=json"  # Test SearXNG
 
 ## Uninstall
 
-### SearXNG container only
+### Using the uninstall script (recommended)
+
+The easiest way to remove any part of the setup. Run this in Ubuntu:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/uninstall.sh | bash
+```
+
+The script detects what is currently installed and builds a menu based on what it finds:
+
+```
+=============================================
+ LM Studio + SearXNG — Uninstaller
+=============================================
+
+ System status:
+
+   [x] SearXNG  — installed
+   [x] Docker   — installed
+
+ What would you like to do?
+
+   1) Remove SearXNG
+   2) Remove everything (SearXNG, Docker, Ubuntu cleanup)
+   3) Exit
+```
+
+Options that no longer apply are removed automatically after each action. Each option asks for confirmation before doing anything and runs an Ubuntu cleanup afterwards. The full removal option prints WSL unregister instructions at the end since that step must be done from Windows CMD.
+
+---
+
+### Manual uninstall
+
+If you prefer to remove things by hand, use the commands below.
+
+#### SearXNG only
 
 ```bash
 docker stop searxng
@@ -136,7 +171,7 @@ docker rmi searxng/searxng
 sudo rm -rf ~/searxng-config
 ```
 
-### Docker
+#### Docker
 
 ```bash
 sudo apt-get purge -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -147,7 +182,7 @@ sudo rm /etc/apt/keyrings/docker.asc
 sudo apt-get autoremove -y
 ```
 
-### Ubuntu (from Windows CMD)
+#### Ubuntu (from Windows CMD)
 
 ```cmd
 wsl --shutdown
@@ -177,8 +212,19 @@ sudo chown -R $USER:$USER ~/searxng-config
 **Docker GPG signature errors on apt-get update:**
 GPG key didn't save correctly. Re-run `setup1.sh` one step at a time manually.
 
-**Docker image download TLS error mid-way:**
-Run `setup2.sh` again — Docker retries cleanly.
+**Docker image download fails with TLS error (`bad record MAC`):**
+A network hiccup corrupted the download mid-way. This can happen on slower or less stable connections. If you see this error, clean up and re-run the script:
+```bash
+docker rm -f searxng
+curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/setup2.sh | bash
+```
+`setup2.sh` retries the SearXNG image pull automatically on subsequent runs.
+
+**Re-running setup2.sh fails with container name conflict:**
+The script now detects and removes existing containers automatically before launching. If you are on an older version, remove it manually first:
+```bash
+docker rm -f searxng
+```
 
 **SearXNG defaulting to port 8080 instead of 8081:**
 Must be passed as `-e SEARXNG_PORT=8081` in the docker run command. The port setting in `settings.yml` is ignored by the container.
