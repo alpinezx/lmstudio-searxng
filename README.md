@@ -20,8 +20,6 @@ SearXNG is a self-hosted, privacy-respecting meta search engine. It queries Goog
   ```
   Then type `exit`, run `wsl --shutdown` in CMD, and reopen Ubuntu from the Start menu.
 
-- In **WSL Settings → Network**, make sure **DNS Proxy is switched off**.
-
 ---
 
 ## Installation
