@@ -108,6 +108,14 @@ wsl --shutdown
 
 ---
 
+## Optional: WSL Manager
+
+Tired of keeping a Ubuntu terminal window open on your taskbar? WSL Manager lets you run WSL silently in the background with no visible window — and optionally start it automatically every time Windows boots.
+
+👉 [Download WSL Manager](https://github.com/alpinezx/wsl-manager)
+
+---
+
 ## Quick Reference Commands
 
 ```bash
