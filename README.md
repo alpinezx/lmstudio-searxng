@@ -70,12 +70,6 @@ In LM Studio → Developer tab → `mcp.json`, replace the entire contents with:
       "env": {
         "SEARXNG_URL": "http://localhost:8081"
       }
-    },
-    "time": {
-      "command": "uvx",
-      "args": [
-        "mcp-server-time"
-      ]
     }
   }
 }
