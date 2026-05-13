@@ -1,4 +1,4 @@
-# lmstudio-searxng
+# LM Studio-SearXNG
 
 > **Windows only.** This setup runs SearXNG inside WSL2 (Windows Subsystem for Linux) and connects it to LM Studio on Windows. It is not intended for native Linux or macOS.
 
