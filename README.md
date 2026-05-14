@@ -131,10 +131,11 @@ curl "http://localhost:8081/search?q=test&format=json"  # Test SearXNG
 
 ### Using the uninstall script (recommended)
 
-The easiest way to remove any part of the setup. Run this in Ubuntu:
+The easiest way to remove any part of the setup. Run these two commands in Ubuntu:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/uninstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/uninstall.sh -o uninstall.sh
+bash uninstall.sh
 ```
 
 The script detects what is currently installed and builds a menu based on what it finds:
