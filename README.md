@@ -47,8 +47,7 @@ When the script finishes it will tell you to restart. Do this:
 ### Step 3 — Run the second script
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/setup2.sh -o setup2.sh
-bash setup2.sh
+curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/setup2.sh -o setup2.sh && bash setup2.sh
 ```
 
 This walks you through a short configuration menu, then launches the SearXNG container and verifies everything is working.
@@ -135,8 +134,7 @@ curl "http://localhost:8081/search?q=test&format=json"  # Test SearXNG
 The easiest way to remove any part of the setup. Run these two commands in Ubuntu:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/uninstall.sh -o uninstall.sh
-bash uninstall.sh
+curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/uninstall.sh -o uninstall.sh && bash uninstall.sh
 ```
 
 The script detects what is currently installed and builds a menu based on what it finds:
