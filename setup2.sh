@@ -181,6 +181,7 @@ docker run -d \
   --restart always \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
+  --user $(id -u):$(id -g) \
   -e SEARXNG_PORT=8081 \
   -v ~/searxng-config:/etc/searxng \
   searxng/searxng
