@@ -2,6 +2,8 @@
 
 > **Windows only.** This setup runs SearXNG inside WSL2 (Windows Subsystem for Linux) and connects it to LM Studio on Windows. It is not intended for native Linux or macOS.
 
+> **Ubuntu only.** These scripts have only been tested on Ubuntu inside WSL2 and are built on Ubuntu/Debian-specific tooling (`apt-get`, Docker's Ubuntu repository). Other WSL distributions are not supported.
+
 Automated setup scripts for a private local search engine (SearXNG) connected to LM Studio via MCP.
 
 SearXNG is a self-hosted, privacy-respecting meta search engine. It queries Google, Bing, DuckDuckGo and others simultaneously, strips out all ads and tracking, and returns clean results — served entirely from your own machine. It can be used directly in your browser or connected to LM Studio so your local AI can search the web.
@@ -197,6 +199,9 @@ dir "C:\Users\%USERNAME%\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu*"
 ---
 
 ## Troubleshooting
+
+**Running on a non-Ubuntu WSL distribution (e.g. Debian, openSUSE, Arch):**
+These scripts are built for Ubuntu and will fail on other distributions. They use `apt-get` for package management and pull Docker from Ubuntu's package repository. If you need to use a different distro, the scripts would need to be adapted manually. The simplest fix is to install Ubuntu alongside your existing distro — WSL supports multiple distributions at once.
 
 **VPN:** Disable before running `wsl --install`. VPNs block WSL downloads.
 
