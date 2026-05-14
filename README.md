@@ -47,10 +47,11 @@ When the script finishes it will tell you to restart. Do this:
 ### Step 3 — Run the second script
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/setup2.sh | bash
+curl -fsSL https://raw.githubusercontent.com/alpinezx/lmstudio-searxng/refs/heads/main/setup2.sh -o setup2.sh
+bash setup2.sh
 ```
 
-This creates the SearXNG config, launches the container, and verifies everything is working.
+This walks you through a short configuration menu, then launches the SearXNG container and verifies everything is working.
 
 ---
 
