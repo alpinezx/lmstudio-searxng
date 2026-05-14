@@ -23,14 +23,15 @@ docker run hello-world > /dev/null 2>&1 && echo "      Docker is working." || {
 
 # --- Create SearXNG config ---
 echo "[2/4] Creating SearXNG config..."
-sudo mkdir -p ~/searxng-config
-sudo chown -R $USER:$USER ~/searxng-config
+mkdir -p ~/searxng-config
 
-sudo tee ~/searxng-config/settings.yml > /dev/null << 'EOF'
+SECRET_KEY=$(openssl rand -hex 20)
+
+tee ~/searxng-config/settings.yml > /dev/null << EOF
 use_default_settings: true
 
 server:
-  secret_key: "changethis123456789"
+  secret_key: "$SECRET_KEY"
   limiter: false
   image_proxy: true
   port: 8081
@@ -101,6 +102,8 @@ docker run -d \
   --name searxng \
   --network=host \
   --restart always \
+  --log-opt max-size=10m \
+  --log-opt max-file=3 \
   -e SEARXNG_PORT=8081 \
   -v ~/searxng-config:/etc/searxng \
   searxng/searxng

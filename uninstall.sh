@@ -35,7 +35,7 @@ remove_searxng() {
 
   if [ -d ~/searxng-config ]; then
     echo "  Removing ~/searxng-config..."
-    sudo rm -rf ~/searxng-config
+    rm -rf ~/searxng-config
     echo "  [x] Config directory removed."
   else
     echo "  [ ] No searxng-config directory found — skipping."
