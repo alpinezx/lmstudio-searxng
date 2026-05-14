@@ -24,6 +24,7 @@ docker run hello-world > /dev/null 2>&1 && echo "      Docker is working." || {
 # --- Create SearXNG config ---
 echo "[2/4] Creating SearXNG config..."
 mkdir -p ~/searxng-config
+sudo chown -R $USER:$USER ~/searxng-config
 
 SECRET_KEY=$(openssl rand -hex 20)
 
