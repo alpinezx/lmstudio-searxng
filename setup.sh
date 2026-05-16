@@ -128,37 +128,18 @@ mkdir -p /root/searxng-config
 
 SECRET_KEY=$(openssl rand -hex 20)
 
-# Build engine block based on selection
-if [ "$ENGINE_MODE" = "preset" ]; then
-  ENGINE_BLOCK="engines:
-  - name: google
-    engine: google
-    disabled: false
-  - name: bing
-    engine: bing
-    disabled: false
-  - name: duckduckgo
-    engine: duckduckgo
-    disabled: false
-  - name: brave
-    engine: brave
-    disabled: false
-  - name: startpage
-    engine: startpage
-    disabled: false
-  - name: wikipedia
-    engine: wikipedia
-    disabled: false
-  - name: reddit
-    engine: reddit
-    disabled: false"
-else
-  ENGINE_BLOCK=""
-fi
-
 if [ "$ENGINE_MODE" = "preset" ]; then
   tee /root/searxng-config/settings.yml > /dev/null << EOF
-use_default_settings: true
+use_default_settings:
+  engines:
+    keep_only:
+      - google
+      - bing
+      - duckduckgo
+      - brave
+      - startpage
+      - wikipedia
+      - reddit
 
 server:
   secret_key: "$SECRET_KEY"
@@ -176,7 +157,6 @@ search:
     - html
     - json
 
-$ENGINE_BLOCK
 ui:
   static_use_hash: true
 EOF
