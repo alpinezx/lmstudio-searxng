@@ -58,10 +58,9 @@ echo ""
 
 # Engine selection
 echo "  Search engines:"
-echo "    1) Preset    — 7 curated engines (Google, Bing, DuckDuckGo, Brave,"
-echo "                   Startpage, Wikipedia, Reddit)"
-echo "    2) Defaults  — SearXNG's 93 built-in defaults (web, news, images,"
-echo "                   science, files and more)"
+echo "    1) Optimal   — curated engines across web, images, video, news,"
+echo "                   maps, music, IT, science and more (recommended)"
+echo "    2) Stock     — SearXNG stock defaults (all built-in engines)"
 echo ""
 while true; do
   read -p "  Enter choice [1-2]: " engine_choice
@@ -134,12 +133,100 @@ use_default_settings:
   engines:
     keep_only:
       - google
-      - bing
       - duckduckgo
       - brave
       - startpage
       - wikipedia
+      - google images
+      - bing images
+      - brave.images
+      - qwant images
+      - startpage images
+      - google videos
+      - bing videos
+      - brave.videos
+      - qwant videos
+      - youtube
+      - google news
+      - bing news
+      - brave.news
+      - duckduckgo news
+      - qwant news
+      - reuters
+      - openstreetmap
+      - photon
+      - genius
+      - soundcloud
+      - arch linux wiki
+      - mdn
+      - arxiv
+      - google scholar
+      - semantic scholar
       - reddit
+
+engines:
+  - name: google
+    disabled: false
+  - name: duckduckgo
+    disabled: false
+  - name: brave
+    disabled: false
+  - name: startpage
+    disabled: false
+  - name: wikipedia
+    disabled: false
+  - name: google images
+    disabled: false
+  - name: bing images
+    disabled: false
+  - name: brave.images
+    disabled: false
+  - name: qwant images
+    disabled: false
+  - name: startpage images
+    disabled: false
+  - name: google videos
+    disabled: false
+  - name: bing videos
+    disabled: false
+  - name: brave.videos
+    disabled: false
+  - name: qwant videos
+    disabled: false
+  - name: youtube
+    disabled: false
+  - name: google news
+    disabled: false
+  - name: bing news
+    disabled: false
+  - name: brave.news
+    disabled: false
+  - name: duckduckgo news
+    disabled: false
+  - name: qwant news
+    disabled: false
+  - name: reuters
+    disabled: false
+  - name: openstreetmap
+    disabled: false
+  - name: photon
+    disabled: false
+  - name: genius
+    disabled: false
+  - name: soundcloud
+    disabled: false
+  - name: arch linux wiki
+    disabled: false
+  - name: mdn
+    disabled: false
+  - name: arxiv
+    disabled: false
+  - name: google scholar
+    disabled: false
+  - name: semantic scholar
+    disabled: false
+  - name: reddit
+    disabled: false
 
 server:
   secret_key: "$SECRET_KEY"
