@@ -183,7 +183,7 @@ engines:
   - name: brave.images
     disabled: false
   - name: qwant
-    disabled: false
+    disabled: true
   - name: qwant images
     disabled: false
   - name: startpage images
