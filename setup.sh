@@ -140,6 +140,7 @@ use_default_settings:
       - google images
       - bing images
       - brave.images
+      - qwant
       - qwant images
       - startpage images
       - google videos
@@ -180,6 +181,8 @@ engines:
   - name: bing images
     disabled: false
   - name: brave.images
+    disabled: false
+  - name: qwant
     disabled: false
   - name: qwant images
     disabled: false
