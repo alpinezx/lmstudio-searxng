@@ -306,14 +306,32 @@ docker run -d \
   searxng/searxng
 
 echo "      Container started. Waiting for SearXNG to be ready..."
-sleep 5
 
-# --- Verify SearXNG is responding ---
-curl -sf "http://localhost:8081/search?q=test&format=json" > /dev/null && echo "      SearXNG is working." || {
+# Retry loop — polls every 3 seconds for up to 60 seconds
+MAX_WAIT=60
+INTERVAL=3
+elapsed=0
+success=false
+
+while [ $elapsed -lt $MAX_WAIT ]; do
+  if curl -sf "http://localhost:8081/search?q=test&format=json" > /dev/null 2>&1; then
+    success=true
+    break
+  fi
+  echo "      Not ready yet... (${elapsed}s elapsed, retrying in ${INTERVAL}s)"
+  sleep $INTERVAL
+  elapsed=$((elapsed + INTERVAL))
+done
+
+if $success; then
+  echo "      SearXNG is working."
+else
   echo ""
-  echo "ERROR: SearXNG didn't respond. Check logs with: docker logs searxng --tail 20"
+  echo "ERROR: SearXNG did not respond after ${MAX_WAIT} seconds."
+  echo "This is likely a startup error rather than a timing issue."
+  echo "Check logs with: docker logs searxng --tail 20"
   exit 1
-}
+fi
 
 echo ""
 echo "============================================="
