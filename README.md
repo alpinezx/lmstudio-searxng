@@ -105,7 +105,30 @@ sudo docker ps                                              # Check SearXNG is r
 sudo docker restart searxng                                 # Restart SearXNG
 sudo docker logs searxng --tail 20                          # Check logs
 curl "http://localhost:8081/search?q=test&format=json"      # Test SearXNG
+sudo nano /root/searxng-config/settings.yml                 # Edit configuration
 ```
+
+---
+
+## Editing the SearXNG Configuration
+
+The config file lives at `/root/searxng-config/settings.yml`. Because the setup runs as root, you'll need `sudo` to edit it:
+
+```bash
+sudo nano /root/searxng-config/settings.yml
+```
+
+After saving, restart SearXNG for the changes to take effect:
+
+```bash
+sudo docker restart searxng
+```
+
+A few things worth knowing:
+
+- **`use_default_settings: true`** at the top of the file is important — it means you only need to include the settings you want to override. SearXNG fills in everything else from its own defaults. Don't remove this line.
+- **The port setting in `settings.yml` is ignored.** The port is controlled by the `-e SEARXNG_PORT=8081` flag in the docker run command. Don't bother changing it in the file.
+- The full list of configurable options is documented at [docs.searxng.org](https://docs.searxng.org/admin/settings/index.html).
 
 ---
 
