@@ -1,28 +1,59 @@
 #!/bin/bash
 # =============================================================
-# setup2.sh — Configure and launch SearXNG
-# Run this after restarting WSL following setup1.sh.
+# setup.sh — Install Docker and launch SearXNG
+# Must be run as root: sudo bash setup.sh
 # =============================================================
 
 set -e  # Stop immediately if any command fails
 
+# --- Ensure running as root ---
+if [ "$EUID" -ne 0 ]; then
+  echo ""
+  echo "ERROR: This script must be run as root."
+  echo "       Please run: sudo bash setup.sh"
+  echo ""
+  exit 1
+fi
+
 echo ""
 echo "============================================="
-echo " LM Studio + SearXNG Setup — Part 2 of 2"
+echo " LM Studio + SearXNG Setup"
 echo "============================================="
 echo ""
 
-# --- Verify Docker is working ---
-echo "[1/5] Verifying Docker..."
+# --- Install Docker dependencies ---
+echo "[1/8] Installing dependencies..."
+apt-get install -y ca-certificates curl
+
+echo "[2/8] Creating keyring directory..."
+install -m 0755 -d /etc/apt/keyrings
+
+echo "[3/8] Adding Docker GPG key..."
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
+
+echo "[4/8] Adding Docker apt repository..."
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
+https://download.docker.com/linux/ubuntu \
+$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+echo "[5/8] Updating package list..."
+apt-get update
+
+echo "[6/8] Installing Docker..."
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+echo "      Verifying Docker..."
 docker run hello-world > /dev/null 2>&1 && echo "      Docker is working." || {
   echo ""
-  echo "ERROR: Docker isn't working yet."
-  echo "Make sure you ran wsl --shutdown and reopened Ubuntu before running this script."
+  echo "ERROR: Docker installed but failed to run. Try restarting WSL and running the script again."
   exit 1
 }
 
 # --- SearXNG configuration choices ---
-echo "[2/5] SearXNG configuration..."
+echo ""
+echo "[7/8] SearXNG configuration..."
 echo ""
 
 # Engine selection
@@ -92,9 +123,8 @@ done
 echo ""
 
 # --- Create SearXNG config ---
-echo "[3/5] Creating SearXNG config..."
-mkdir -p ~/searxng-config
-sudo chown -R $USER:$USER ~/searxng-config
+echo "[8/8] Creating config, pulling image and starting SearXNG..."
+mkdir -p /root/searxng-config
 
 SECRET_KEY=$(openssl rand -hex 20)
 
@@ -126,7 +156,8 @@ else
   ENGINE_BLOCK=""
 fi
 
-tee ~/searxng-config/settings.yml > /dev/null << EOF
+if [ "$ENGINE_MODE" = "preset" ]; then
+  tee /root/searxng-config/settings.yml > /dev/null << EOF
 use_default_settings: true
 
 server:
@@ -149,12 +180,34 @@ $ENGINE_BLOCK
 ui:
   static_use_hash: true
 EOF
+else
+  tee /root/searxng-config/settings.yml > /dev/null << EOF
+use_default_settings: true
+
+server:
+  secret_key: "$SECRET_KEY"
+  limiter: false
+  image_proxy: $IMAGE_PROXY
+  port: 8081
+  bind_address: "0.0.0.0"
+
+search:
+  safe_search: $SAFE_SEARCH
+  autocomplete: ""
+  default_lang: ""
+  max_results: $MAX_RESULTS
+  formats:
+    - html
+    - json
+
+ui:
+  static_use_hash: true
+EOF
+fi
 
 echo "      Config written."
 
 # --- Launch SearXNG container ---
-echo "[4/5] Starting SearXNG container..."
-
 if docker ps -a --format '{{.Names}}' | grep -q '^searxng$'; then
   echo "      Found existing searxng container — removing it..."
   docker rm -f searxng > /dev/null
@@ -181,16 +234,14 @@ docker run -d \
   --restart always \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
-  --user $(id -u):$(id -g) \
   -e SEARXNG_PORT=8081 \
-  -v ~/searxng-config:/etc/searxng \
+  -v /root/searxng-config:/etc/searxng \
   searxng/searxng
 
 echo "      Container started. Waiting for SearXNG to be ready..."
 sleep 5
 
 # --- Verify SearXNG is responding ---
-echo "[5/5] Verifying SearXNG..."
 curl -sf "http://localhost:8081/search?q=test&format=json" > /dev/null && echo "      SearXNG is working." || {
   echo ""
   echo "ERROR: SearXNG didn't respond. Check logs with: docker logs searxng --tail 20"

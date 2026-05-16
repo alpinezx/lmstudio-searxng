@@ -1,12 +1,19 @@
 #!/bin/bash
 # =============================================================
 # uninstall.sh — Remove SearXNG and/or Docker
+# Must be run as root: sudo bash uninstall.sh
 # Detects what's installed and builds the menu dynamically.
-# Cleans up only what was installed by the setup scripts.
+# Cleans up only what was installed by the setup script.
 # =============================================================
 
-# --- Authenticate sudo upfront to avoid mid-script prompts ---
-sudo -v
+# --- Ensure running as root ---
+if [ "$EUID" -ne 0 ]; then
+  echo ""
+  echo "ERROR: This script must be run as root."
+  echo "       Please run: sudo bash uninstall.sh"
+  echo ""
+  exit 1
+fi
 
 # =============================================================
 # Helper functions
@@ -33,9 +40,9 @@ remove_searxng() {
     echo "  [ ] No searxng image found — skipping."
   fi
 
-  if [ -d ~/searxng-config ]; then
-    echo "  Removing ~/searxng-config..."
-    rm -rf ~/searxng-config
+  if [ -d /root/searxng-config ]; then
+    echo "  Removing /root/searxng-config..."
+    rm -rf /root/searxng-config
     echo "  [x] Config directory removed."
   else
     echo "  [ ] No searxng-config directory found — skipping."
@@ -55,19 +62,19 @@ remove_docker() {
   fi
 
   echo "  Uninstalling Docker packages..."
-  sudo apt-get purge -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 2>/dev/null
-  sudo rm -rf /var/lib/docker
-  sudo rm -rf /var/lib/containerd
-  sudo rm -f /etc/apt/sources.list.d/docker.list
-  sudo rm -f /etc/apt/keyrings/docker.asc
+  apt-get purge -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 2>/dev/null
+  rm -rf /var/lib/docker
+  rm -rf /var/lib/containerd
+  rm -f /etc/apt/sources.list.d/docker.list
+  rm -f /etc/apt/keyrings/docker.asc
   echo "  [x] Docker removed."
   echo ""
 }
 
 ubuntu_cleanup() {
   echo "--- Running Ubuntu cleanup ---"
-  sudo apt-get autoremove -y
-  sudo apt-get clean
+  apt-get autoremove -y
+  apt-get clean
   echo "  [x] Cleanup complete."
   echo ""
 }
